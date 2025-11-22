@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node *next;
+
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+Node *head = nullptr;
+
+void insertLast(int val) {
+    Node *newNode = new Node(val);
+
+    if (head == nullptr) {
+        head = newNode;
+        newNode->next = head;
+        return;
+    }
+
+    Node *temp = head;
+    while (temp->next != head)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->next = head;
+}
+
+void displayCLL() {
+    if (head == nullptr) return;
+
+    Node *temp = head;
+
+    cout << "Circular List: ";
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+
+    cout << head->data; // repeat head
+}
