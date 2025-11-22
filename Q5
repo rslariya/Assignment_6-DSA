@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node *next;
+
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+Node *head = nullptr;
+
+void insert(int val) {
+    Node *newNode = new Node(val);
+
+    if (head == nullptr) {
+        head = newNode;
+        return;
+    }
+
+    Node *temp = head;
+    while (temp->next != nullptr)
+        temp = temp->next;
+
+    temp->next = newNode;
+}
+
+bool isCircular(Node *head) {
+    if (head == nullptr) return false;
+
+    Node *temp = head->next;
+
+    while (temp != nullptr && temp != head)
+        temp = temp->next;
+
+    return (temp == head);
+}
+
+int main() {
+    int n, val, choice;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    cout << "Enter node values:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> val;
+        insert(val);
+    }
+
+    cout << "\nMake list circular? (1=Yes, 0=No): ";
+    cin >> choice;
+
+    if (choice == 1) {
+        Node *temp = head;
+        while (temp->next != nullptr)
+            temp = temp->next;
+
+        temp->next = head;
+    }
+
+    if (isCircular(head))
+        cout << "\nThe Linked List IS Circular.\n";
+    else
+        cout << "\nThe Linked List is NOT Circular.\n";
+
+    return 0;
+}
