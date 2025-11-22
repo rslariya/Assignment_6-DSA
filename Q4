@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    char data;
+    Node *prev, *next;
+
+    Node(char val) {
+        data = val;
+        prev = next = nullptr;
+    }
+};
+
+Node *head = nullptr;
+
+void insert(char val) {
+    Node *newNode = new Node(val);
+
+    if (head == nullptr) {
+        head = newNode;
+        return;
+    }
+
+    Node *temp = head;
+    while (temp->next != nullptr)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+bool isPalindrome() {
+    if (head == nullptr) return true;
+
+    Node *left = head;
+    Node *right = head;
+
+    
+    while (right->next != nullptr)
+        right = right->next;
+
+    while (left != right && right->next != left) {
+        if (left->data != right->data)
+            return false;
+
+        left = left->next;
+        right = right->prev;
+    }
+    return true;
+}
+
+int main() {
+    int n;
+    char ch;
+
+    cout << "Enter number of characters: ";
+    cin >> n;
+
+    cout << "Enter characters:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> ch;
+        insert(ch);
+    }
+
+    if (isPalindrome())
+        cout << "The Doubly Linked List is a Palindrome.\n";
+    else
+        cout << "The Doubly Linked List is NOT a Palindrome.\n";
+
+    return 0;
+}
