@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+
+class DoubleNode {
+public:
+    int value;
+    DoubleNode *previous, *after;
+
+    DoubleNode(int val) {
+        value = val;
+        previous = after = nullptr;
+    }
+};
+
+DoubleNode *doubleStart = nullptr;
+
+void addDouble(int val) {
+    DoubleNode *newElem = new DoubleNode(val);
+
+    if (doubleStart == nullptr) {
+        doubleStart = newElem;
+        return;
+    }
+
+    DoubleNode *current = doubleStart;
+    while (current->after != nullptr)
+        current = current->after;
+
+    current->after = newElem;
+    newElem->previous = current;
+}
+
+int countDouble() {
+    DoubleNode *current = doubleStart;
+    int total = 0;
+
+    while (current != nullptr) {
+        total++;
+        current = current->after;
+    }
+    return total;
+}
+
+class CircularNode {
+public:
+    int value;
+    CircularNode *after;
+
+    CircularNode(int val) {
+        value = val;
+        after = nullptr;
+    }
+};
+
+CircularNode *circularStart = nullptr;
+
+void addCircular(int val) {
+    CircularNode *newElem = new CircularNode(val);
+
+    if (circularStart == nullptr) {
+        circularStart = newElem;
+        newElem->after = circularStart;
+        return;
+    }
+
+    CircularNode *current = circularStart;
+    while (current->after != circularStart)
+        current = current->after;
+
+    current->after = newElem;
+    newElem->after = circularStart;
+}
+
+int countCircular() {
+    if (circularStart == nullptr) return 0;
+
+    CircularNode *current = circularStart;
+    int total = 0;
+
+    do {
+        total++;
+        current = current->after;
+    } while (current != circularStart);
+
+    return total;
+}
+
+int main() {
+    addDouble(10);
+    addDouble(20);
+    addDouble(30);
+
+    cout << "doubly linked list count = " << countDouble() << endl;
+
+    addCircular(100);
+    addCircular(200);
+    addCircular(300);
+    addCircular(400);
+
+    cout << "circular linked list count = " << countCircular() << endl;
+
+    return 0;
+}
